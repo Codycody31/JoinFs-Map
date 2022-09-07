@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">JoinFsMap</string>
+    <string name="channel_description">JoinFs Mobile Map</string>
+    <string name="channel_name">JoinFs Map</string>
 </resources>
