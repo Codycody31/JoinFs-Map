@@ -8,6 +8,8 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.webkit.WebView
 import android.widget.Button
@@ -17,20 +19,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 
-
+var notificationIdNumerator = 0
 @Suppress("SpellCheckingInspection")
 class MainActivity : AppCompatActivity() {
     private var mWebview: WebView? = null
-    var notificationIdNumerator = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         startWebView()
+        createNotificationChannel()
     }
     override fun onDestroy() {
-        // delete notification if it exists
-        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.cancel(1)
         super.onDestroy()
         }
     @SuppressLint("SetTextI18n", "SetJavaScriptEnabled")
@@ -55,8 +54,14 @@ class MainActivity : AppCompatActivity() {
         val cm = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
         return cm.activeNetworkInfo != null && cm.activeNetworkInfo!!.isConnected
     }
-
     fun reloadPage(@Suppress("UNUSED_PARAMETER") v:View) {
+        val ReloadHandler = Handler(Looper.getMainLooper())
+        ReloadHandler.post(object : Runnable {
+            override fun run() {
+                if (!isNetworkConnected()){return }else { finish();startActivity(intent) }
+                ReloadHandler.postDelayed(this, 10000)
+            }
+        })
         if (!isNetworkConnected()){
             val mToast = Toast.makeText(applicationContext,"Please turn on your internet!", Toast.LENGTH_SHORT)
             mToast.show()
@@ -66,8 +71,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
-
-private fun MainActivity.startnotification(title: String, content: String) {
+private fun MainActivity.SendNotification(title: String, content: String) {
     val builder = NotificationCompat.Builder(this, "JoinFsMap")
         .setSmallIcon(R.drawable.ic_notification)
         .setContentTitle(title)
@@ -78,7 +82,8 @@ private fun MainActivity.startnotification(title: String, content: String) {
         .setOnlyAlertOnce(true)
     with(NotificationManagerCompat.from(this)) {
         // notificationId is a unique int for each notification that you must define
-        notify(notificationIdNumerator + 1, builder.build())
+        notificationIdNumerator = notificationIdNumerator + 1
+        notify(notificationIdNumerator, builder.build())
     }
 }
 
