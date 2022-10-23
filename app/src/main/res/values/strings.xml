@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">JoinFsMap</string>
-    <string name="channel_description">JoinFs Mobile Map</string>
+    <string name="channel_description">JoinFs Mobile Map Notifications</string>
     <string name="channel_name">JoinFs Map</string>
+    <string name="reload">Reload</string>
+    <string name="website_failed_to_port_over">Website failed to port over!</string>
 </resources>
