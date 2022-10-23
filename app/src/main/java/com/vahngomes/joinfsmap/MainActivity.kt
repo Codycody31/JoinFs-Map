@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
         val ReloadHandler = Handler(Looper.getMainLooper())
         ReloadHandler.post(object : Runnable {
             override fun run() {
-                if (!isNetworkConnected()){return }else { finish();startActivity(intent) }
+                if (!isNetworkConnected()){ }else { finish();startActivity(intent) }
                 ReloadHandler.postDelayed(this, 10000)
             }
         })
