@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
     }
     override fun onDestroy() {
         super.onDestroy()
-        }
+    }
     @SuppressLint("SetTextI18n", "SetJavaScriptEnabled")
     private fun startWebView(){
         val text: TextView = findViewById(R.id.android_text)
